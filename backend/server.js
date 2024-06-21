@@ -7,7 +7,7 @@ const notificationRoutes = require('./routes/notification');
 const multer = require("multer");
 const path = require('path');
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'https://proviewz-1.onrender.com' }));
 
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
