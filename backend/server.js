@@ -26,6 +26,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+app.get('/', (req, res) => {
+    res.send('Backend is working!');
+});
 app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files from the 'uploads' directory
 app.use('/auth', authRoutes);
