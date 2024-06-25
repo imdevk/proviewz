@@ -31,7 +31,7 @@ const Signup = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/auth/register', data);
+            const response = await axios.post('https://proviewz.onrender.com/auth/register', data);
             console.log(response.data);
             // Handle successful registration (e.g., redirect to login page)
         } catch (error) {

@@ -23,7 +23,7 @@ const Login = () => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:5000/auth/login', formData, {
+            const response = await axios.post('https://proviewz.onrender.com/auth/login', formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
