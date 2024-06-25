@@ -120,7 +120,7 @@ const SinglePost = () => {
                         <div className="flex items-center">
                             {post.author && post.author.profileImage ? (
                                 <img
-                                    src={`http://localhost:5000/${post.author.profileImage}`}
+                                    src={`https://proviewz.onrender.com/${post.author.profileImage}`}
                                     alt={post.author.name || 'Author'}
                                     className="w-10 h-10 rounded-full mr-3 object-cover"
                                 />

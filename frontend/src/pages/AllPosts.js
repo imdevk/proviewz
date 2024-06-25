@@ -10,7 +10,7 @@ const AllPosts = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/posts');
+                const response = await axios.get('https://proviewz.onrender.com/posts');
                 setPosts(response.data);
                 console.log(response.data);
                 setLoading(false);

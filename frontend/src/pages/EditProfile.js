@@ -18,7 +18,7 @@ const EditProfile = () => {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:5000/auth/${id}`, {
+                const response = await axios.get(`https://proviewz.onrender.com/auth/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setFormData(response.data);

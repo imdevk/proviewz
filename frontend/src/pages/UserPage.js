@@ -13,14 +13,14 @@ const UserPage = () => {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`http://localhost:5000/auth/${id}`, {
+                const response = await axios.get(`https://proviewz.onrender.com/auth/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setUser(response.data);
 
                 // Check if the user is logged in and viewing their own profile
                 if (token) {
-                    const meResponse = await axios.get('http://localhost:5000/auth/me', {
+                    const meResponse = await axios.get('https://proviewz.onrender.com/auth/me', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setIsOwnProfile(meResponse.data._id === id);

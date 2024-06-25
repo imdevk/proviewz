@@ -17,7 +17,7 @@ const EditPost = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/posts/${id}`);
+                const response = await axios.get(`https://proviewz.onrender.com/posts/${id}`);
                 const postData = response.data;
                 setPost(postData);
                 setTitle(postData.title);
