@@ -1,5 +1,5 @@
 const Post = require('../models/Post');
-const { createNotification } = require('./notification');
+// const { createNotification } = require('./notification');
 const multer = require('multer')
 const path = require('path');
 const categories = require('../config/categories');
@@ -132,10 +132,10 @@ const commentOnPost = async (req, res, next) => {
         post.comments.push({ user: req.userId, comment });
         const updatedPost = await post.save();
 
-        // Notify post owner
-        if (post.author.toString() !== req.userId) {
-            await createNotification(post.author, req.userId, 'comment', 'commented on your post', post._id);
-        }
+        // // Notify post owner
+        // if (post.author.toString() !== req.userId) {
+        //     await createNotification(post.author, req.userId, 'comment', 'commented on your post', post._id);
+        // }
 
         res.status(200).json(updatedPost);
     } catch (error) {
@@ -171,15 +171,15 @@ const ratePost = async (req, res, next) => {
 
         const updatedPost = await post.save();
 
-        if (post.author.toString() !== req.userId) {
-            await createNotification(
-                post.author,
-                req.userId,
-                'rating',
-                `rated your post "${post.title}" with ${rating} stars`,
-                post._id
-            );
-        }
+        // if (post.author.toString() !== req.userId) {
+        //     await createNotification(
+        //         post.author,
+        //         req.userId,
+        //         'rating',
+        //         `rated your post "${post.title}" with ${rating} stars`,
+        //         post._id
+        //     );
+        // }
 
         res.status(200).json(updatedPost);
     } catch (error) {

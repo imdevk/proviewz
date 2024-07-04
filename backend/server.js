@@ -12,7 +12,6 @@ const app = express();
 
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
-const notificationRoutes = require('./routes/notification');
 
 app.use(cors({ origin: 'https://proviewz-onrender.com/' }));
 app.use(bodyParser.json());
@@ -43,7 +42,6 @@ app.get('/', (req, res) => {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files from the 'uploads' directory
 app.use('/auth', authRoutes);
 app.use('/posts', postRoutes);
-app.use('/notifications', notificationRoutes);
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
