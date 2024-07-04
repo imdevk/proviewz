@@ -13,7 +13,7 @@ const app = express();
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
 
-app.use(cors({ origin: 'https://proviewz-onrender.com/' }));
+app.use(cors({ origin: 'https://proviewz.onrender.com/' }));
 app.use(bodyParser.json());
 
 const uri = process.env.MONGODB_URI;
