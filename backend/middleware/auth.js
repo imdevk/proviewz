@@ -5,11 +5,10 @@ const auth = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     if (!token) {
-      console.error('No token provided');
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    const decodedData = jwt.verify(token, 'secret');
+    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = decodedData.id;
 
     const user = await User.findById(req.userId);

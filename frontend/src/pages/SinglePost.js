@@ -8,6 +8,7 @@ const SinglePost = () => {
     const navigate = useNavigate();
     const [post, setPost] = useState(null);
     const [comment, setComment] = useState('');
+    const [userRating, setUserRating] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,8 +21,8 @@ const SinglePost = () => {
         const fetchUserAndPost = async () => {
             try {
                 const [postResponse, userResponse] = await Promise.all([
-                    axios.get(`http://localhost:5000/posts/${id}`),
-                    token ? axios.get('http://localhost:5000/auth/me', {
+                    axios.get(`https://proviewzb-onrender.com/posts/${id}`),
+                    token ? axios.get('https://proviewzb-onrender.com/auth/me', {
                         headers: { Authorization: `Bearer ${token}` }
                     }) : Promise.resolve(null)
                 ]);
@@ -29,6 +30,11 @@ const SinglePost = () => {
                 setPost(postResponse.data);
                 if (userResponse) {
                     setCurrentUserId(userResponse.data._id);
+                    // Find user's rating
+                    const userRating = postResponse.data.ratings.find(r => r.user === userResponse.data._id);
+                    if (userRating) {
+                        setUserRating(userRating.rating);
+                    }
                 }
                 setLoading(false);
             } catch (err) {
@@ -50,7 +56,7 @@ const SinglePost = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(`http://localhost:5000/posts/${id}/like`, {}, {
+            const response = await axios.post(`https://proviewzb-onrender.com/posts/${id}/like`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setPost(response.data);
@@ -58,6 +64,35 @@ const SinglePost = () => {
             console.error('Error liking post:', error);
         }
     };
+
+    const handleRating = async (rating) => {
+        if (!isLoggedIn) {
+            alert("Please log in to rate this post.");
+            navigate('/login');
+            return;
+        }
+
+        if (userRating !== 0) {
+            alert("You have already rated this post.");
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post(`https://proviewzb-onrender.com/posts/${id}/rate`, { rating }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setPost(response.data);
+            setUserRating(rating);
+        } catch (error) {
+            console.error('Error rating post: ', error);
+            if (error.response && error.response.status === 400) {
+                alert(error.response.data.message);
+            } else {
+                alert("An error occurred while rating the post. Please try again.");
+            }
+        }
+    }
 
     const handleComment = async (e) => {
         e.preventDefault();
@@ -69,7 +104,7 @@ const SinglePost = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(`http://localhost:5000/posts/${id}/comment`, { comment }, {
+            const response = await axios.post(`https://proviewzb-onrender.com/posts/${id}/comment`, { comment }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setPost(prevPost => ({
@@ -90,7 +125,7 @@ const SinglePost = () => {
         if (window.confirm('Are you sure you want to delete this post?')) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`http://localhost:5000/posts/${id}`, {
+                await axios.delete(`https://proviewzb-onrender.com/posts/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 navigate('/');
@@ -120,7 +155,7 @@ const SinglePost = () => {
                         <div className="flex items-center">
                             {post.author && post.author.profileImage ? (
                                 <img
-                                    src={`https://proviewz.onrender.com/${post.author.profileImage}`}
+                                    src={`https://proviewzb-onrender.com/${post.author.profileImage}`}
                                     alt={post.author.name || 'Author'}
                                     className="w-10 h-10 rounded-full mr-3 object-cover"
                                 />
@@ -131,7 +166,7 @@ const SinglePost = () => {
                                     </span>
                                 </div>
                             )}
-                            <span className="text-sm font-medium text-gray-700">
+                            <span className="text-sm font-bold text-gray-700">
                                 {post.author ? post.author.name : 'Unknown Author'}
                             </span>
                         </div>
@@ -151,7 +186,7 @@ const SinglePost = () => {
 
                     {post.image && (
                         <img
-                            src={`http://localhost:5000/${post.image}`}
+                            src={`https://proviewzb-onrender.com/${post.image}`}
                             alt={post.title}
                             className="w-full h-64 object-contain mb-4 rounded"
                         />
@@ -178,18 +213,69 @@ const SinglePost = () => {
                         </div>
                     </div>
 
+                    <div className="mb-6">
+                        <div className="mb-3">
+                            <h3 className="font-semibold mb-2">Category:</h3>
+                            <span className="inline-block bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
+                                {post.category}
+                            </span>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold mb-2">Tags:</h3>
+                            <div>
+                                {post.tags.map((tag, index) => (
+                                    <span key={index} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                                        #{tag}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="flex items-center mb-4">
                         <button
                             onClick={handleLike}
-                            className={`flex items-center mr-4 ${isLoggedIn ? 'text-blue-500 hover:text-blue-600' : 'text-gray-500'}`}
+                            className={`flex items-center mr-4 ${isLoggedIn ? (post.likes.includes(currentUserId) ? 'text-blue-500' : 'text-gray-500') : 'text-gray-500'}`}
                         >
-                            <i className="fas fa-heart mr-1"></i>
+                            <i className={`fas fa-heart mr-1 ${post.likes.includes(currentUserId) ? 'text-blue-500' : ''}`}></i>
                             <span>{post.likes.length} Likes</span>
                         </button>
                         <span className="text-gray-500">
                             <i className="fas fa-comment mr-1"></i>
                             {post.comments.length} Comments
                         </span>
+                    </div>
+
+                    <div className="mb-4">
+                        <h3 className="font-semibold mb-2">Rating:</h3>
+                        <div className="flex items-center mb-2">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <button
+                                    key={star}
+                                    onClick={() => handleRating(star)}
+                                    className={`text-2xl ${star <= (userRating || 0) ? 'text-yellow-500' : 'text-gray-300'}`}
+                                    disabled={userRating !== 0}
+                                >
+                                    ★
+                                </button>
+                            ))}
+                            {userRating !== 0 && (
+                                <span className="ml-2">Your rating: {userRating}</span>
+                            )}
+                        </div>
+                        <div className="flex items-center">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    className={`text-2xl ${star <= post.averageRating ? 'text-yellow-500' : 'text-gray-300'}`}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                            <span className="ml-2">
+                                Average: {post.averageRating.toFixed(1)} ({post.ratingCount} ratings)
+                            </span>
+                        </div>
                     </div>
 
                     {isLoggedIn && (
@@ -217,7 +303,7 @@ const SinglePost = () => {
                                 <div className="flex items-center mb-2">
                                     {comment.user && comment.user.profileImage ? (
                                         <img
-                                            src={`http://localhost:5000/${comment.user.profileImage}`}
+                                            src={`https://proviewzb-onrender.com/${comment.user.profileImage}`}
                                             alt={comment.user.name || 'User'}
                                             className="w-8 h-8 rounded-full mr-2 object-cover"
                                         />
@@ -228,7 +314,7 @@ const SinglePost = () => {
                                             </span>
                                         </div>
                                     )}
-                                    <span className="font-medium">{comment.user ? comment.user.name : 'Unknown User'}</span>
+                                    <span className="font-bold">{comment.user ? comment.user.name : 'Unknown User'}</span>
                                 </div>
                                 <p className="ml-10">{comment.comment}</p>
                             </div>

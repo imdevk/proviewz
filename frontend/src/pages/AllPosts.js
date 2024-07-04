@@ -10,8 +10,8 @@ const AllPosts = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get('https://proviewz.onrender.com/posts');
-                setPosts(response.data);
+                const response = await axios.get('https://proviewzb-onrender.com/posts');
+                setPosts(response.data.posts);
                 console.log(response.data);
                 setLoading(false);
             } catch (err) {
@@ -41,7 +41,7 @@ const AllPosts = () => {
                             <div className="flex items-center mb-4">
                                 {post.author.profileImage ? (
                                     <img
-                                        src={`http://localhost:5000/${post.author.profileImage}`}
+                                        src={`https://proviewzb-onrender.com/${post.author.profileImage}`}
                                         alt={post.author.name}
                                         className="w-10 h-10 rounded-full mr-3 object-cover"
                                     />
@@ -52,13 +52,13 @@ const AllPosts = () => {
                                         </span>
                                     </div>
                                 )}
-                                <span className="text-sm font-medium text-gray-700">
+                                <span className="text-sm font-bold text-gray-700">
                                     {post.author.name}
                                 </span>
                             </div>
                             {post.image && (
                                 <img
-                                    src={`http://localhost:5000/${post.image}`}
+                                    src={`https://proviewzb-onrender.com/${post.image}`}
                                     alt={post.title}
                                     className="w-full h-48 object-contain mb-4 rounded"
                                 />
@@ -74,6 +74,12 @@ const AllPosts = () => {
                                     <span className="text-sm text-gray-500">
                                         <i className="fas fa-comment text-blue-500 mr-1"></i>
                                         {post.comments.length}
+                                    </span>
+                                </div>
+                                <div className="flex items-center">
+                                    <span className="text-sm text-gray-500">
+                                        <i className="fas fa-star text-yellow-500 mr-1"></i>
+                                        {post.averageRating ? post.averageRating.toFixed(1) : 'N/A'}
                                     </span>
                                 </div>
                             </div>

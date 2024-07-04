@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import HomePage from './pages/HomePage';
+// import HomePage from './pages/HomePage';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import UserPage from './pages/UserPage';
@@ -11,6 +11,8 @@ import SinglePost from './pages/SinglePost';
 import EditPost from './pages/EditPost';
 import CreatePost from './pages/CreatePost';
 import { AuthProvider } from './context/AuthContext';
+import SearchPosts from './pages/SearchPosts';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -19,15 +21,17 @@ function App() {
         <div className='font-roboto'>
           <Navbar />
           <Routes>
-            <Route path='/' exact element={<HomePage />} />
+            <Route path='/' exact element={<AllPosts />} />
             <Route path='/signup' exact element={<Signup />} />
             <Route path='/login' exact element={<Login />} />
             <Route path='/user/:id' element={<UserPage />} />
             <Route path='/edit-profile/:id' element={<EditProfile />} />
-            <Route path='/posts' element={<AllPosts />} />
+            {/* <Route path='/posts' element={<AllPosts />} /> */}
             <Route path='/post/:id' element={<SinglePost />} />
             <Route path='/edit-post/:id' element={<EditPost />} />
             <Route path='/create-post' element={<CreatePost />} />
+            <Route path='/search' element={<SearchPosts />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </div >
       </Router >

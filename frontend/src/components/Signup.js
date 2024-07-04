@@ -11,8 +11,11 @@ const Signup = () => {
         password: '',
         occupation: '',
         location: '',
-        profileImage: null,
+        bio: '',
     });
+
+    const [profileImage, setProfileImage] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,7 +23,9 @@ const Signup = () => {
     };
 
     const handleFileChange = (e) => {
-        setFormData({ ...formData, profileImage: e.target.files[0] });
+        const file = e.target.files[0];
+        setProfileImage(file);
+        setPreviewImage(URL.createObjectURL(file))
     };
 
     const handleSubmit = async (e) => {
@@ -30,14 +35,22 @@ const Signup = () => {
             data.append(key, formData[key]);
         }
 
+        if (profileImage) {
+            data.append('profileImage', profileImage);
+        }
+
         try {
-            const response = await axios.post('https://proviewz.onrender.com/auth/register', data);
+            const response = await axios.post('https://proviewzb-onrender.com/auth/register', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             console.log(response.data);
             // Handle successful registration (e.g., redirect to login page)
+            navigate('/login');
         } catch (error) {
             console.error('Error during registration:', error);
         }
-        navigate('/login');
     };
 
     return (
@@ -83,12 +96,20 @@ const Signup = () => {
                         onChange={handleChange}
                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    <textarea
+                        name='bio'
+                        placeholder='Bio'
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                     <input
                         type="file"
                         name="profileImage"
                         onChange={handleFileChange}
                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    {previewImage && (
+                        <img src={previewImage} alt="Preview" className='mt-2 rounded-lg' style={{ maxWidth: '100%', maxHeight: '200px' }} />
+                    )}
                     <button
                         type="submit"
                         className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300"

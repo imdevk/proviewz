@@ -10,6 +10,7 @@ const Login = () => {
         email: '',
         password: '',
     });
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,24 +19,36 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         if (!formData.email || !formData.password) {
             alert("Please enter both email and password");
             return;
         }
         try {
-            const response = await axios.post('https://proviewz.onrender.com/auth/login', formData, {
+            const response = await axios.post('https://proviewzb-onrender.com/auth/login', formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
             login(response.data.token);
             console.log(response.data);
-            navigate('/posts');
+            navigate('/');
 
             window.location.reload();
             // Handle successful login (e.g., save token, redirect to dashboard)
         } catch (error) {
             console.error('Error during login:', error);
+            if (error.response) {
+                if (error.response.status === 404) {
+                    setError('User not found');
+                } else if (error.response.status === 400) {
+                    setError('Invalid credentials');
+                } else {
+                    setError('An error occurred. Please try again.');
+                }
+            } else {
+                setError('Network error. Please check your connection.');
+            }
         }
     };
 
@@ -43,6 +56,11 @@ const Login = () => {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+                {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <span className="block sm:inline">{error}</span>
+                    </div>
+                )}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="email"

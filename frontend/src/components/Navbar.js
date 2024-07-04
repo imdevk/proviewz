@@ -14,7 +14,7 @@ function Navbar() {
             if (token) {
                 setIsLoggedIn(true);
                 try {
-                    const response = await axios.get('https://proviewz.onrender.com/auth/me', {
+                    const response = await axios.get('https://proviewzb-onrender.com/auth/me', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setUserId(response.data._id);
@@ -45,6 +45,9 @@ function Navbar() {
             <div className="flex space-x-4 items-center">
                 {isLoggedIn ? (
                     <>
+                        <Link to="/search" className="text-white">
+                            <i className='fas fa-search'></i>
+                        </Link>
                         <Link to="/notifications" className="text-white">
                             <i className="fas fa-bell"></i>
                         </Link>
@@ -58,6 +61,9 @@ function Navbar() {
                     </>
                 ) : (
                     <>
+                        <Link to="/search" className="text-white">
+                            <i className='fas fa-search'></i>
+                        </Link>
                         <Link to="/signup" className="text-white">Sign Up</Link>
                         <Link to="/login" className="text-white">Login</Link>
                     </>

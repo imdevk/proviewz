@@ -13,14 +13,14 @@ const UserPage = () => {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`https://proviewz.onrender.com/auth/${id}`, {
+                const response = await axios.get(`https://proviewzb-onrender.com/auth/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setUser(response.data);
 
                 // Check if the user is logged in and viewing their own profile
                 if (token) {
-                    const meResponse = await axios.get('https://proviewz.onrender.com/auth/me', {
+                    const meResponse = await axios.get('https://proviewzb-onrender.com/auth/me', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setIsOwnProfile(meResponse.data._id === id);
@@ -28,7 +28,6 @@ const UserPage = () => {
             } catch (error) {
                 console.error('Error fetching user:', error);
                 if (error.response && error.response.status === 401) {
-                    // Handle unauthorized access (e.g., redirect to login)
                     navigate('/login');
                 }
             }
@@ -45,7 +44,7 @@ const UserPage = () => {
         if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`http://localhost:5000/auth/${id}`, {
+                await axios.delete(`https://proviewzb-onrender.com/auth/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 localStorage.removeItem('token');
@@ -68,21 +67,36 @@ const UserPage = () => {
                         <i className="fas fa-edit"></i>
                     </button>
                 )}
-                <h2 className="text-2xl font-bold mb-6 text-center">User Information</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center">User Profile</h2>
                 <div className="space-y-4">
                     <div className="text-center">
                         {user.profileImage && (
                             <img
-                                src={`http://localhost:5000/${user.profileImage}`}
+                                src={`https://proviewzb-onrender.com/${user.profileImage}`}
                                 alt="Profile"
                                 className="w-24 h-24 rounded-full mx-auto mb-4"
                             />
                         )}
                         <h3 className="text-xl font-semibold">{user.name}</h3>
                         <p className="text-gray-600"><b>Email: </b>{user.email}</p>
-                        <p className="text-gray-600"><b>Occupation: </b>{user.occupation}</p>
-                        <p className="text-gray-600"><b>Location: </b>{user.location}</p>
+                        <div>
+                            <p className="text-gray-600"><b>Occupation: </b>{user.occupation}</p>
+                            <p className="text-gray-600"><b>Location: </b>{user.location}</p>
+                            <p className='text-gray-600'><b>Bio: </b>{user.bio || 'No bio available'}</p>
+                        </div>
                     </div>
+                </div>
+                <div className="mt-6">
+                    <h4 className="text-lg font-semibold mb-2">Favorite Gadgets</h4>
+                    {user.favoriteGadgets && user.favoriteGadgets.length > 0 ? (
+                        <ul className="list-disc list-inside">
+                            {user.favoriteGadgets.map((gadget, index) => (
+                                <li key={index} className="text-gray-600">{gadget}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-gray-600">No favorite gadgets listed</p>
+                    )}
                 </div>
                 {isOwnProfile && (
                     <button

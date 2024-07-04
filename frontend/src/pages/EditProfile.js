@@ -9,8 +9,10 @@ const EditProfile = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        password: 'password',
         occupation: '',
-        location: ''
+        location: '',
+        bio: ''
     });
     const [profileImage, setProfileImage] = useState(null);
 
@@ -18,10 +20,13 @@ const EditProfile = () => {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`https://proviewz.onrender.com/auth/${id}`, {
+                const response = await axios.get(`https://proviewzb-onrender.com/auth/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                setFormData(response.data);
+                setFormData({
+                    ...response.data,
+                    password: '' //Don't populate the password field
+                });
                 setProfileImage(response.data.profileImage);
             } catch (error) {
                 console.error('Error fetching user:', error);
@@ -44,12 +49,15 @@ const EditProfile = () => {
         try {
             const token = localStorage.getItem('token');
             const formDataToSend = new FormData();
-            Object.keys(formData).forEach(key => formDataToSend.append(key, formData[key]));
+            Object.keys(formData).forEach(key => {
+                formDataToSend.append(key, formData[key]);
+            });
+
             if (profileImage) {
                 formDataToSend.append('profileImage', profileImage);
             }
 
-            await axios.put(`http://localhost:5000/auth/${id}`, formDataToSend, {
+            await axios.put(`https://proviewzb-onrender.com/auth/${id}`, formDataToSend, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
@@ -69,7 +77,7 @@ const EditProfile = () => {
                     <div className="text-center">
                         {profileImage && (
                             <img
-                                src={`http://localhost:5000/${profileImage}`}
+                                src={`https://proviewzb-onrender.com/${profileImage}`}
                                 alt="Profile"
                                 className="w-24 h-24 rounded-full mx-auto mb-4"
                             />
@@ -97,6 +105,14 @@ const EditProfile = () => {
                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="New Password (leave blank to keep current)"
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <input
                         type="text"
                         name="occupation"
                         value={formData.occupation}
@@ -110,6 +126,13 @@ const EditProfile = () => {
                         value={formData.location}
                         onChange={handleChange}
                         placeholder="Location"
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <textarea
+                        name="bio"
+                        value={formData.bio}
+                        onChange={handleChange}
+                        placeholder="Bio"
                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <button
