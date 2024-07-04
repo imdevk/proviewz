@@ -25,7 +25,7 @@ const Login = () => {
             return;
         }
         try {
-            const response = await axios.post('https://proviewzb-onrender.com/auth/login', formData, {
+            const response = await axios.post('https://proviewzb.onrender.com/auth/login', formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

@@ -10,7 +10,7 @@ const AllPosts = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get('https://proviewzb-onrender.com/posts');
+                const response = await axios.get('https://proviewzb.onrender.com/posts');
                 setPosts(response.data.posts);
                 console.log(response.data);
                 setLoading(false);
@@ -41,7 +41,7 @@ const AllPosts = () => {
                             <div className="flex items-center mb-4">
                                 {post.author.profileImage ? (
                                     <img
-                                        src={`https://proviewzb-onrender.com/${post.author.profileImage}`}
+                                        src={`https://proviewzb.onrender.com/${post.author.profileImage}`}
                                         alt={post.author.name}
                                         className="w-10 h-10 rounded-full mr-3 object-cover"
                                     />
@@ -58,7 +58,7 @@ const AllPosts = () => {
                             </div>
                             {post.image && (
                                 <img
-                                    src={`https://proviewzb-onrender.com/${post.image}`}
+                                    src={`https://proviewzb.onrender.com/${post.image}`}
                                     alt={post.title}
                                     className="w-full h-48 object-contain mb-4 rounded"
                                 />

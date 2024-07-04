@@ -13,14 +13,14 @@ const UserPage = () => {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`https://proviewzb-onrender.com/auth/${id}`, {
+                const response = await axios.get(`https://proviewzb.onrender.com/auth/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setUser(response.data);
 
                 // Check if the user is logged in and viewing their own profile
                 if (token) {
-                    const meResponse = await axios.get('https://proviewzb-onrender.com/auth/me', {
+                    const meResponse = await axios.get('https://proviewzb.onrender.com/auth/me', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setIsOwnProfile(meResponse.data._id === id);
@@ -44,7 +44,7 @@ const UserPage = () => {
         if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`https://proviewzb-onrender.com/auth/${id}`, {
+                await axios.delete(`https://proviewzb.onrender.com/auth/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 localStorage.removeItem('token');
@@ -72,7 +72,7 @@ const UserPage = () => {
                     <div className="text-center">
                         {user.profileImage && (
                             <img
-                                src={`https://proviewzb-onrender.com/${user.profileImage}`}
+                                src={`https://proviewzb.onrender.com/${user.profileImage}`}
                                 alt="Profile"
                                 className="w-24 h-24 rounded-full mx-auto mb-4"
                             />

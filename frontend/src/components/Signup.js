@@ -40,7 +40,7 @@ const Signup = () => {
         }
 
         try {
-            const response = await axios.post('https://proviewzb-onrender.com/auth/register', data, {
+            const response = await axios.post('https://proviewzb.onrender.com/auth/register', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

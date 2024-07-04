@@ -14,7 +14,7 @@ const SearchPosts = () => {
         setError(null);
 
         try {
-            const response = await axios.get(`https://proviewzb-onrender.com/posts/search?query=${query}`);
+            const response = await axios.get(`https://proviewzb.onrender.com/posts/search?query=${query}`);
             setPosts(response.data);
             setLoading(false);
         } catch (err) {
@@ -55,7 +55,7 @@ const SearchPosts = () => {
                         <div className="bg-white rounded-lg shadow-md overflow-hidden h-48">
                             {post.image ? (
                                 <img
-                                    src={`https://proviewzb-onrender.com/${post.image}`}
+                                    src={`https://proviewzb.onrender.com/${post.image}`}
                                     alt={post.title}
                                     className="w-full h-32 object-cover"
                                 />

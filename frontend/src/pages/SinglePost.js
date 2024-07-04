@@ -21,8 +21,8 @@ const SinglePost = () => {
         const fetchUserAndPost = async () => {
             try {
                 const [postResponse, userResponse] = await Promise.all([
-                    axios.get(`https://proviewzb-onrender.com/posts/${id}`),
-                    token ? axios.get('https://proviewzb-onrender.com/auth/me', {
+                    axios.get(`https://proviewzb.onrender.com/posts/${id}`),
+                    token ? axios.get('https://proviewzb.onrender.com/auth/me', {
                         headers: { Authorization: `Bearer ${token}` }
                     }) : Promise.resolve(null)
                 ]);
@@ -56,7 +56,7 @@ const SinglePost = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(`https://proviewzb-onrender.com/posts/${id}/like`, {}, {
+            const response = await axios.post(`https://proviewzb.onrender.com/posts/${id}/like`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setPost(response.data);
@@ -79,7 +79,7 @@ const SinglePost = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(`https://proviewzb-onrender.com/posts/${id}/rate`, { rating }, {
+            const response = await axios.post(`https://proviewzb.onrender.com/posts/${id}/rate`, { rating }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setPost(response.data);
@@ -104,7 +104,7 @@ const SinglePost = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(`https://proviewzb-onrender.com/posts/${id}/comment`, { comment }, {
+            const response = await axios.post(`https://proviewzb.onrender.com/posts/${id}/comment`, { comment }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setPost(prevPost => ({
@@ -125,7 +125,7 @@ const SinglePost = () => {
         if (window.confirm('Are you sure you want to delete this post?')) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`https://proviewzb-onrender.com/posts/${id}`, {
+                await axios.delete(`https://proviewzb.onrender.com/posts/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 navigate('/');
@@ -155,7 +155,7 @@ const SinglePost = () => {
                         <div className="flex items-center">
                             {post.author && post.author.profileImage ? (
                                 <img
-                                    src={`https://proviewzb-onrender.com/${post.author.profileImage}`}
+                                    src={`https://proviewzb.onrender.com/${post.author.profileImage}`}
                                     alt={post.author.name || 'Author'}
                                     className="w-10 h-10 rounded-full mr-3 object-cover"
                                 />
@@ -186,7 +186,7 @@ const SinglePost = () => {
 
                     {post.image && (
                         <img
-                            src={`https://proviewzb-onrender.com/${post.image}`}
+                            src={`https://proviewzb.onrender.com/${post.image}`}
                             alt={post.title}
                             className="w-full h-64 object-contain mb-4 rounded"
                         />
@@ -303,7 +303,7 @@ const SinglePost = () => {
                                 <div className="flex items-center mb-2">
                                     {comment.user && comment.user.profileImage ? (
                                         <img
-                                            src={`https://proviewzb-onrender.com/${comment.user.profileImage}`}
+                                            src={`https://proviewzb.onrender.com/${comment.user.profileImage}`}
                                             alt={comment.user.name || 'User'}
                                             className="w-8 h-8 rounded-full mr-2 object-cover"
                                         />

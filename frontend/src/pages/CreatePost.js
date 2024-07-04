@@ -75,7 +75,7 @@ const CreatePost = () => {
 
         try {
             const token = localStorage.getItem('token');
-            await axios.post('https://proviewzb-onrender.com/posts', formData, {
+            await axios.post('https://proviewzb.onrender.com/posts', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,

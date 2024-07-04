@@ -20,7 +20,7 @@ const EditPost = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`https://proviewzb-onrender.com/posts/${id}`);
+                const response = await axios.get(`https://proviewzb.onrender.com/posts/${id}`);
                 const postData = response.data;
                 setPost(postData);
                 setTitle(postData.title);

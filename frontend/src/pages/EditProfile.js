@@ -20,7 +20,7 @@ const EditProfile = () => {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get(`https://proviewzb-onrender.com/auth/${id}`, {
+                const response = await axios.get(`https://proviewzb.onrender.com/auth/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setFormData({
@@ -57,7 +57,7 @@ const EditProfile = () => {
                 formDataToSend.append('profileImage', profileImage);
             }
 
-            await axios.put(`https://proviewzb-onrender.com/auth/${id}`, formDataToSend, {
+            await axios.put(`https://proviewzb.onrender.com/auth/${id}`, formDataToSend, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
@@ -77,7 +77,7 @@ const EditProfile = () => {
                     <div className="text-center">
                         {profileImage && (
                             <img
-                                src={`https://proviewzb-onrender.com/${profileImage}`}
+                                src={`https://proviewzb.onrender.com/${profileImage}`}
                                 alt="Profile"
                                 className="w-24 h-24 rounded-full mx-auto mb-4"
                             />

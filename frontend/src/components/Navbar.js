@@ -14,7 +14,7 @@ function Navbar() {
             if (token) {
                 setIsLoggedIn(true);
                 try {
-                    const response = await axios.get('https://proviewzb-onrender.com/auth/me', {
+                    const response = await axios.get('https://proviewzb.onrender.com/auth/me', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setUserId(response.data._id);
