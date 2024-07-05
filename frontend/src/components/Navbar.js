@@ -48,9 +48,9 @@ function Navbar() {
                         <Link to="/search" className="text-white">
                             <i className='fas fa-search'></i>
                         </Link>
-                        <Link to="/notifications" className="text-white">
+                        {/* <Link to="/notifications" className="text-white">
                             <i className="fas fa-bell"></i>
-                        </Link>
+                        </Link> */}
                         <Link to="/create-post" className="text-white">
                             <i className="fas fa-plus"></i>
                         </Link>
