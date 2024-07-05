@@ -13,8 +13,20 @@ import CreatePost from './pages/CreatePost';
 import { AuthProvider } from './context/AuthContext';
 import SearchPosts from './pages/SearchPosts';
 import NotFound from './pages/NotFound';
+import axios from 'axios';
 
 function App() {
+  useEffect(() => {
+    // Ping the backend when the component mounts
+    axios.get('https://proviewzb.onrender.com/')
+      .then(response => {
+        console.log('Backend is awake');
+      })
+      .catch(error => {
+        console.error('Error waking up backend:', error);
+      });
+  }, []);
+
   return (
     <AuthProvider>
       <Router>
