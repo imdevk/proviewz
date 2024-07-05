@@ -81,7 +81,7 @@ const CreatePost = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            navigate('/posts'); // Redirect to home page or post list
+            navigate('/'); // Redirect to home page or post list
         } catch (error) {
             console.error('Error creating post:', error);
             setError('Failed to create post. Please try again later.');
